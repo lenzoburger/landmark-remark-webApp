@@ -1,10 +1,15 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using landmark_remark_API.Dtos;
 using landmark_remark_API.Models;
 using landmark_remark_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace landmark_remark_API.Controllers
 {
@@ -14,9 +19,11 @@ namespace landmark_remark_API.Controllers
     {
         private readonly IAuthRepository _authRepo;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthRepository authRepo, IMapper mapper)
+        public AuthController(IAuthRepository authRepo, IMapper mapper, IConfiguration configuration)
         {
+            _configuration = configuration;
             _authRepo = authRepo;
             _mapper = mapper;
         }
@@ -43,19 +50,61 @@ namespace landmark_remark_API.Controllers
 
             var userToReturnDto = _mapper.Map<UserToReturnDto>(newUserInstance);
 
-            return CreatedAtRoute("GetUser", new {controller = "Users", id = newUserInstance.Id}, userToReturnDto);
-        }
-
-        public Task<OkObjectResult> GetUser(int userId)
-        {
-            throw new NotImplementedException();
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = newUserInstance.Id }, userToReturnDto);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            await _authRepo.Login(userLoginDto.Username, userLoginDto.Password);
-            return Ok("2.0");
+            var returnedUser = await _authRepo.LoginAsync(userLoginDto.Username.ToLower(), userLoginDto.Password);
+
+            if (returnedUser == null)
+            {
+                return Unauthorized();
+            }
+
+            var securityTokenDescriptor = CreateSecurityTokenDescriptor(returnedUser);
+
+            var securityTokenHandler = new JwtSecurityTokenHandler();
+
+            var token = securityTokenHandler.CreateToken(securityTokenDescriptor);
+
+            var userObject = _mapper.Map<UserToReturnDto>(returnedUser);
+
+            await _authRepo.LoginAsync(userLoginDto.Username, userLoginDto.Password);
+
+            return Ok(new
+            {
+                token = securityTokenHandler.WriteToken(token),
+                userObject
+            });
+        }
+
+        private SecurityTokenDescriptor CreateSecurityTokenDescriptor(User loginUser)
+        {
+            //Set claim with username and id
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, loginUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, loginUser.Username)
+            };
+
+            //convert secret Key retrieved from AppSettings
+            var key = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            //hash Secret key
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            //Combine tokenSubject + expiryDate + Hashed secretKey
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            return tokenDescriptor;
         }
 
     }

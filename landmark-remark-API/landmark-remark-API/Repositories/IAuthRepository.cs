@@ -7,7 +7,7 @@ namespace landmark_remark_API.Repositories
     {
         Task<User> RegisterAsync(User user, string password);
 
-        Task<User> Login(string username, string password);
+        Task<User> LoginAsync(string username, string password);
 
         Task<bool> UsernameExistsAsync(string username);
 
