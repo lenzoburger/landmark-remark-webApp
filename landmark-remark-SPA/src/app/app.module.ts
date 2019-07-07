@@ -17,46 +17,50 @@ import { AlertifyService } from './_services/alertify.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { AuthGuard } from './_guards/auth.guard';
+import { RemarkComponent } from './remark/remark.component';
+import { AgmCoreModule } from '@agm/core';
 
 export function tokenGetter() {
-   return localStorage.getItem('token');
- }
+  return localStorage.getItem('token');
+}
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      HomeComponent,
-      NavComponent,
-      RegisterComponent
-   ],
-   imports: [
-      BrowserModule,
-      AppRoutingModule,
-      AppRoutes,
-      HttpClientModule,
-      FormsModule,
-      ReactiveFormsModule,
-      BrowserAnimationsModule,
-      FontAwesomeModule,
-      JwtModule.forRoot({
-         config: {
-           tokenGetter,
-           whitelistedDomains: ['localhost:5000'],
-           blacklistedRoutes: ['localhost:5000/api/auth']
-         },
-       })
-   ],
-   providers: [
-      AuthService,
-      ErrorInterceptorProvider,
-      AlertifyService
-   ],
-   bootstrap: [
-      AppComponent
-   ]
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    NavComponent,
+    RegisterComponent,
+    RemarkComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AppRoutes,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    AgmCoreModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:5000'],
+        blacklistedRoutes: ['localhost:5000/api/auth']
+      },
+    })
+  ],
+  providers: [
+    AuthService,
+    ErrorInterceptorProvider,
+    AlertifyService,
+    AuthGuard
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
-   constructor() {
-      library.add(faEnvelope);
-    }
+  constructor() {
+    library.add(faEnvelope);
+  }
 }
