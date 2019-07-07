@@ -42,7 +42,9 @@ export function tokenGetter() {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    AgmCoreModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBfSbbvG6EXEtgav8sqSoYNoPSSKuSpG0Q'
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter,

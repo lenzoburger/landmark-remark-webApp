@@ -1,3 +1,21 @@
-<p>
-  remark works!
-</p>
+<agm-map [latitude]="lat" [longitude]="lng" (mapClick)="placeMarker($event)">
+  <!-- <agm-marker [latitude]="lat" [longitude]="lng" [markerDraggable]="true">
+      <agm-info-window>
+        <p>Longitude: {{lng}}</p>
+        <p>Latitude: {{lat}}</p>
+      </agm-info-window>
+    </agm-marker> -->
+    <agm-marker [latitude]="homeLat" [longitude]="homeLng" [iconUrl]="{'url': 'assets/currentLocation.png', 'scaledSize': {'height': 40, 'width': 40}}">
+        <agm-info-window>
+          <p>Your Current Location:</p>
+          <p>Longitude: {{lng}}</p>
+          <p>Latitude: {{lat}}</p>
+        </agm-info-window>
+      </agm-marker>
+  <agm-marker [latitude]="59.326242" [longitude]="17.8419719" [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+    <agm-info-window>
+        <p>Username: {{lng}}</p>
+        <p>Note: {{lat}}</p>
+    </agm-info-window>
+  </agm-marker>
+</agm-map>
