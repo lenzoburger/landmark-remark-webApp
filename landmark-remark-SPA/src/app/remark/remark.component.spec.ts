@@ -1,9 +1,12 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RemarkComponent } from './remark.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RemarkComponent', () => {
   let component: RemarkComponent;
@@ -11,7 +14,16 @@ describe('RemarkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemarkComponent ]
+      imports: [
+        RouterTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule
+      ],
+      declarations: [ RemarkComponent ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ],
     })
     .compileComponents();
   }));

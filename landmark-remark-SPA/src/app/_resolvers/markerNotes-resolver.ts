@@ -14,6 +14,7 @@ export class MarkerNotesResolver implements Resolve<MarkerNote[]> {
     private alertify: AlertifyService
   ) {}
 
+  // resolve markerNotes data for remark component
   resolve(route: ActivatedRouteSnapshot): Observable<MarkerNote[]> {
     return this.markerNoteService.getMarkerNotes().pipe(
       catchError(error => {

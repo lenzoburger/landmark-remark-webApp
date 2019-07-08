@@ -19,10 +19,12 @@ export class RemarkComponent implements OnInit {
   homeLat: number; // current user location marker coords
   homeLng: number; // current user location marker coords
   addNoteMode = false; // Toggle add note to current location form
-  noteForm: FormGroup; // Add not reactive form
+  noteForm: FormGroup; // AddNote reactive form
   markerNote: MarkerNote; // MarkerNote instance to hold add note form data
   savedMarkers: MarkerNote[]; // marker notes retrived from API
+  searchResults: MarkerNote[]; // marker notes search result retrived from API
   currentUserId: number;
+  searchBarForm: FormGroup; // add search bar validation form
 
   constructor(
     private markerNoteService: MarkerNoteService,
@@ -33,13 +35,15 @@ export class RemarkComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentUserId = this.authService.currentUser.id;
-    this.getCurrentLocation(); // Get current location set to current view on map
-    this.createNoteForm(); // Create reactive createNoteForm
-
+    // retrieve saved markers
     this.route.data.subscribe(data => {
       this.savedMarkers = data.savedMarkers;
     });
+
+    this.currentUserId = this.authService.currentUser.id;
+    this.getCurrentLocation(); // Get current location set to current view on map
+    this.createNoteForm(); // Create reactive createNoteForm
+    this.creatSearchBarForm(); // Create reactive searchBarForm
   }
 
   // Set coordinates to where user clicks and place marker -- Disabled temporarily
@@ -70,7 +74,14 @@ export class RemarkComponent implements OnInit {
   // formuilder for creating marker note
   createNoteForm() {
     this.noteForm = this.fb.group({
-      note: ['', [Validators.required]]
+      note: ['', [Validators.required, Validators.maxLength(150)]]
+    });
+  }
+
+  // formuilder for search bar validation
+  creatSearchBarForm() {
+    this.searchBarForm = this.fb.group({
+      search: ['', [Validators.required]]
     });
   }
 
@@ -89,5 +100,21 @@ export class RemarkComponent implements OnInit {
         this.alertify.error(error);
       }
     );
+  }
+
+  searchMarkerNotes(searchString: string) {
+    this.markerNoteService.searchMarkerNotes(searchString).subscribe(
+      (markerNotes: MarkerNote[]) => {
+        this.searchResults = markerNotes;
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
+  }
+
+  gotToMarkerLocation(lat, lng) {
+    this.lat = lat;
+    this.lng = lng;
   }
 }

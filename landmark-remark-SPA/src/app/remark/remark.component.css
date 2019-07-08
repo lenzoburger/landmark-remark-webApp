@@ -3,17 +3,17 @@
   max-width: 1200px;
   display: grid;
   grid-template-areas:
-    ' searchBar addNote'
-    ' guide     guide'
-    ' results   results';
-  grid-template-columns: 22fr 12fr;
+    ' searchBar'
+    ' guide'
+    ' results';
+  grid-template-columns: auto;
   grid-template-rows: auto;
   grid-gap: 10px;
   place-items: center;
 }
 
 agm-map {
-  height: 400px;
+  height: 450px;
 }
 
 #searchBar {
@@ -22,7 +22,7 @@ agm-map {
 
 #addNote {
   margin-right: 5px;
-  grid-area: addNote;
+  margin-left: 10px;
   justify-self: end;
 }
 
@@ -33,6 +33,20 @@ agm-map {
 
 #searchResults {
   width: 100%;
-  min-height: 150px;
   grid-area: results;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  grid-auto-rows: minmax(auto, 200px);
+  place-items: center;
+  grid-gap: 8px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.card :hover {
+  background-color: aliceblue;
 }
