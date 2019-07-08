@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MarkerNote } from '../_models/markerNote';
 import { AuthService } from '../_services/auth.service';
 import { MarkerNoteService } from '../_services/markerNote.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-remark',
@@ -20,20 +21,28 @@ export class RemarkComponent implements OnInit {
   addNoteMode = false; // Toggle add note to current location form
   noteForm: FormGroup; // Add not reactive form
   markerNote: MarkerNote; // MarkerNote instance to hold add note form data
+  savedMarkers: MarkerNote[]; // marker notes retrived from API
+  currentUserId: number;
 
   constructor(
     private markerNoteService: MarkerNoteService,
     private authService: AuthService,
     private fb: FormBuilder,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.currentUserId = this.authService.currentUser.id;
     this.getCurrentLocation(); // Get current location set to current view on map
     this.createNoteForm(); // Create reactive createNoteForm
+
+    this.route.data.subscribe(data => {
+      this.savedMarkers = data.savedMarkers;
+    });
   }
 
-  // Set coordinates to where to user clicks and place marker
+  // Set coordinates to where user clicks and place marker -- Disabled temporarily
   placeMarker(location) {
     this.lat = location.coords.lat;
     this.lng = location.coords.lng;
@@ -70,12 +79,15 @@ export class RemarkComponent implements OnInit {
     this.markerNote = Object.assign({}, this.noteForm.value);
     this.markerNote.latitude = this.homeLat;
     this.markerNote.longitude = this.homeLng;
-    this.markerNote.user = { ...this.authService.currentUser };
-    this.markerNoteService.createMarkerNote(this.markerNote).subscribe(() => {
-      this.alertify.success('Note created successfully');
-      this.addNoteToggle();
-    }, error => {
-      this.alertify.error(error);
-    });
+    this.markerNoteService.createMarkerNote(this.markerNote).subscribe(
+      () => {
+        this.alertify.success('Note created successfully');
+        this.noteForm.reset();
+        this.addNoteToggle();
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
   }
 }

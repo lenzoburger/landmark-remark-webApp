@@ -23,9 +23,9 @@ namespace landmark_remark_API.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("Latitude");
+                    b.Property<double>("Latitude");
 
-                    b.Property<int>("Longitude");
+                    b.Property<double>("Longitude");
 
                     b.Property<string>("Note");
 

@@ -14,43 +14,75 @@
       <p>Note: {{lat}}</p>
     </agm-info-window>
   </agm-marker>
+
+  <ng-container *ngFor="let marker of savedMarkers">
+
+    <agm-marker *ngIf="marker.userId == currentUserId" [latitude]="marker.latitude" [longitude]="marker.longitude"
+      [iconUrl]="{'url': 'assets/myMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+      <agm-info-window>          
+          <p>Your Note:</p>
+          <Span class="d-block">Note:</Span>
+          <p>{{marker.note}}</p>
+          <span>Created On: {{marker.createdDate | date}}</span>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker *ngIf="marker.userId != currentUserId" [latitude]="marker.latitude" [longitude]="marker.longitude"
+    [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+    <agm-info-window>
+      <span>Username:</span>
+      <p>{{marker.username}}</p>
+      <Span class="d-block">Note:</Span>
+      <p>{{marker.note}}</p>
+      <span>Created On: {{marker.createdDate | date}}</span>
+    </agm-info-window>
+  </agm-marker>
+  </ng-container>
+
+
 </agm-map>
 
-<div class="remarkBody m-2">
+<div class="remarkBody">
   <div id="searchBar" class="input-group">
-    <input type="text" class="form-control" placeholder="Search notes; by username, content..."
+    <input type="text" class="form-control" placeholder="Search ...by username & note content"
       aria-label="Search by username, note content..." aria-describedby="button-addon2">
     <div class="input-group-append">
       <button [disabled]="addNoteMode" class="btn btn-outline-info" type="button" id="button-addon2">Search</button>
     </div>
   </div>
 
-  <button *ngIf="!addNoteMode" id="addNote" class="btn btn-dark btn-md" (click)="addNoteToggle()">Add Note</button>
+  <button *ngIf="!addNoteMode" id="addNote" class="btn btn-info btn-md" (click)="addNoteToggle()">Add Note</button>
 
-  <div id="guide" class="rounded bg-light">
-    <span>Guide</span>
+  <div id="guide" class="rounded bg-light row">
+    <div class="col-4"><img src="assets/currentLocation.png" alt="Current position" height="35" width="35">
+      Current Location</div>
+    <div class="col-4"><img src="assets/myMarkers.png" alt="my markers" height="35" width="35">
+      My Markers</div>
+    <div class="col-4"><img src="assets/peopleMarkers.png" alt="Other's markers" height="35" width="35">
+      People's Markers</div>
   </div>
 
-  <div *ngIf="!addNoteMode" id="searchResults" class="rounded bg-light">Search Results</div>
+  <div *ngIf="!addNoteMode" id="searchResults" class="rounded bg-light">Search Results
+  </div>
+
+
   <div *ngIf="addNoteMode" id="searchResults" class="rounded bg-light">
-    <span class="d-block m-1">Add Note for current location:</span> 
-    <span class="d-block ml-2"><strong>Longitude:</strong> {{lng}}</span> 
+    <span class="d-block m-1">Add Note for current location:</span>
+    <span class="d-block ml-2"><strong>Longitude:</strong> {{lng}}</span>
     <span class="d-block ml-2"><strong>Latitude:</strong> {{lat}}</span>
-      <form class="m-2" [formGroup]="noteForm" (ngSubmit)="createMarkerNote()">
-          <div class="form-group">
-            <label class="control-label"><b>Description</b>:</label>
-            <textarea type="text" class="form-control" formControlName="note" placeholder="note..."
-              [ngClass]="{'is-invalid': noteForm.get('note').errors && noteForm.get('note').touched}"></textarea>
-      
-            <div class="invalid-feedback" *ngIf="noteForm.get('note').hasError('required') && noteForm.get('note').touched">
-              Note description is required</div>
-          </div>
-      
-          <button class="btn btn-success" [disabled]="!noteForm.valid" type="submit" id="formSubmit">Save</button>
-          <button class="btn btn-light btn-md" (click)="addNoteToggle()">Cancel</button>
-        </form>
+    <form class="m-2" [formGroup]="noteForm" (ngSubmit)="createMarkerNote()">
+      <div class="form-group">
+        <label class="control-label"><b>Description</b>:</label>
+        <textarea type="text" class="form-control" formControlName="note" placeholder="note..."
+          [ngClass]="{'is-invalid': noteForm.get('note').errors && noteForm.get('note').touched}"></textarea>
+
+        <div class="invalid-feedback" *ngIf="noteForm.get('note').hasError('required') && noteForm.get('note').touched">
+          Note description is required</div>
+      </div>
+
+      <button class="btn btn-success" [disabled]="!noteForm.valid" type="submit" id="formSubmit">Save</button>
+      <button class="btn btn-light btn-md" (click)="addNoteToggle()">Cancel</button>
+    </form>
   </div>
-
-
 
 </div>

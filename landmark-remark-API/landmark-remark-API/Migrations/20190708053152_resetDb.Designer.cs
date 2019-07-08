@@ -9,14 +9,36 @@ using landmark_remark_API.Data;
 namespace landmark_remark_API.Migrations
 {
     [DbContext(typeof(LandmarkingContext))]
-    [Migration("20190706041409_initial-migration")]
-    partial class initialmigration
+    [Migration("20190708053152_resetDb")]
+    partial class resetDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+
+            modelBuilder.Entity("landmark_remark_API.Models.MarkerNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Longitude");
+
+                    b.Property<string>("Note");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MarkerNotes");
+                });
 
             modelBuilder.Entity("landmark_remark_API.Models.User", b =>
                 {
@@ -36,6 +58,14 @@ namespace landmark_remark_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("landmark_remark_API.Models.MarkerNote", b =>
+                {
+                    b.HasOne("landmark_remark_API.Models.User", "User")
+                        .WithMany("UserMarkerNotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

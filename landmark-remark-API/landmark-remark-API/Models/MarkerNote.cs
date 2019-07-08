@@ -6,8 +6,8 @@ namespace landmark_remark_API.Models
     public class MarkerNote
     {
         public int Id { get; set; }
-        public int Longitude { get; set; }
-        public int Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
         public string Note { get; set; }        
         public DateTime CreatedDate { get; set; }
         

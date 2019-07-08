@@ -1,10 +1,12 @@
 .remarkBody {
+  margin: 5px auto;
+  max-width: 1200px;
   display: grid;
   grid-template-areas:
     ' searchBar addNote'
     ' guide     guide'
     ' results   results';
-  grid-template-columns: 27fr 12fr;
+  grid-template-columns: 22fr 12fr;
   grid-template-rows: auto;
   grid-gap: 10px;
   place-items: center;
@@ -19,7 +21,9 @@ agm-map {
 }
 
 #addNote {
+  margin-right: 5px;
   grid-area: addNote;
+  justify-self: end;
 }
 
 #guide {
