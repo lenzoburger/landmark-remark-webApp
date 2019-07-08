@@ -15,12 +15,15 @@ namespace landmark_remark_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+    // Registration and authenticion api Controller 
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepo;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IAuthRepository _authRepo; // To access Authetication db query methods
+        private readonly IMapper _mapper; // To tranform/map request & response data into Model data
+        private readonly IConfiguration _configuration; // To access AppSettings Configuration & secret key
 
+        // Constructor to set Authentication repository, automapper and current IConfiguration
         public AuthController(IAuthRepository authRepo, IMapper mapper, IConfiguration configuration)
         {
             _configuration = configuration;
@@ -28,6 +31,7 @@ namespace landmark_remark_API.Controllers
             _mapper = mapper;
         }
 
+        // Transforms/Maps recieved User data, saves it, and returns newly created user from db repo.
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDto UserDto)
         {
@@ -53,6 +57,7 @@ namespace landmark_remark_API.Controllers
             return CreatedAtRoute("GetUser", new { controller = "Users", id = newUserInstance.Id }, userToReturnDto);
         }
 
+        // Verifies user credentials and returns JWT Token
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
@@ -80,6 +85,7 @@ namespace landmark_remark_API.Controllers
             });
         }
 
+        // generate new SecurityTokenDescriptor for securityTokenHandler
         private SecurityTokenDescriptor CreateSecurityTokenDescriptor(User loginUser)
         {
             //Set claim with username and id

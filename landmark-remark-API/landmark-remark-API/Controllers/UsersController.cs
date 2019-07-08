@@ -12,17 +12,21 @@ namespace landmark_remark_API.Controllers
     [ApiController]
     [Authorize]
 
+    // User Data api Controller 
     public class UsersController : ControllerBase
     {
 
-        private readonly ILandmarkingRepository _landmarkingRepo;
-        private readonly IMapper _mapper;
+        private readonly ILandmarkingRepository _landmarkingRepo; // To access User and db query methods
+        private readonly IMapper _mapper; // To tranform/map request & response data into Model data
+
+        // Constructor to set Landmarking repository, automapper
         public UsersController(ILandmarkingRepository landmarkingRepo, IMapper mapper)
         {
             _landmarkingRepo = landmarkingRepo;
             _mapper = mapper;
         }
 
+        // Get User by id and return tranformed into UserToReturnDto
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {

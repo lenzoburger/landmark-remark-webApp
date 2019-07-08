@@ -5,16 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace landmark_remark_API.Repositories
 {
+    // Registration and authenticion repository to write changes to db context 
     public class AuthRepository : IAuthRepository
     {
         private readonly LandmarkingContext _context;
 
+        // Set dbContext
         public AuthRepository(LandmarkingContext context)
         {
             _context = context;
 
         }
 
+        //Verify username and hashed password for login
         public async Task<User> LoginAsync(string username, string password)
         {
             var userToReturn = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
@@ -32,6 +35,7 @@ namespace landmark_remark_API.Repositories
             return userToReturn;
         }
 
+        //Create new user to db with hashed password and password salt
         public async Task<User> RegisterAsync(User user, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -47,6 +51,7 @@ namespace landmark_remark_API.Repositories
             return user;
         }
 
+        //Check if email is already in use
         public async Task<bool> EmailExistsAsync(string email)
         {
             if (await _context.Users.AnyAsync(user => user.Email == email))
@@ -56,6 +61,7 @@ namespace landmark_remark_API.Repositories
             return false;
         }
 
+        //Check if username already exists in db
         public async Task<bool> UsernameExistsAsync(string username)
         {
             if (await _context.Users.AnyAsync(user => user.Username == username))
@@ -65,6 +71,7 @@ namespace landmark_remark_API.Repositories
             return false;
         }
 
+        //Encrypt password - Return new Password Hash and Password salt
         private void HashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
@@ -75,6 +82,7 @@ namespace landmark_remark_API.Repositories
 
         }
 
+        //Hashes the recieved password and compares with Hash password saved in db
         private bool VerifyHashedPassword(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmacKey = new System.Security.Cryptography.HMACSHA512(passwordSalt))

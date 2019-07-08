@@ -42,9 +42,11 @@ export function tokenGetter() {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    // import Google Maps module with google cloud api key
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBfSbbvG6EXEtgav8sqSoYNoPSSKuSpG0Q'
     }),
+    // Send Authentication details in HTPP requests automatically for whitelistedDomains
     JwtModule.forRoot({
       config: {
         tokenGetter,
@@ -61,6 +63,8 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent]
 })
+
+// export font-awesome icons library
 export class AppModule {
   constructor() {
     library.add(faEnvelope);

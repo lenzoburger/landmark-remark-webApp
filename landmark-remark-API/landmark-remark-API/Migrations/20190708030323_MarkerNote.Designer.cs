@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using landmark_remark_API.Data;
 
 namespace landmark_remark_API.Migrations
 {
     [DbContext(typeof(LandmarkingContext))]
-    partial class LandmarkingContextModelSnapshot : ModelSnapshot
+    [Migration("20190708030323_MarkerNote")]
+    partial class MarkerNote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

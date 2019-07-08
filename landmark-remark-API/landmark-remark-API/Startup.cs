@@ -36,13 +36,13 @@ namespace landmark_remark_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LandmarkingContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LandmarkingContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))); //Add Sqlite connection string
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<ILandmarkingRepository, LandmarkingRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>(); // Add authenticaion repository to container
+            services.AddScoped<ILandmarkingRepository, LandmarkingRepository>(); // Add to container: Repository to access and manipulate LandmarkingRemark data 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddCors();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddCors(); // To resolve Cors issue when accessing from browser via angular SPA - no Issue in Postman
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // specify JWT authenticationScheme  and add JwtBearer options
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -70,8 +70,8 @@ namespace landmark_remark_API
                 {
                     builder.Run(async context =>
                     {
+                        // Propagate api errors to consumer
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
                         var error = context.Features.Get<IExceptionHandlerFeature>();
                         if (error != null)
                         {

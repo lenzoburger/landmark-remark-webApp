@@ -1,21 +1,56 @@
-<agm-map [latitude]="lat" [longitude]="lng" (mapClick)="placeMarker($event)">
-  <!-- <agm-marker [latitude]="lat" [longitude]="lng" [markerDraggable]="true">
-      <agm-info-window>
-        <p>Longitude: {{lng}}</p>
-        <p>Latitude: {{lat}}</p>
-      </agm-info-window>
-    </agm-marker> -->
-    <agm-marker [latitude]="homeLat" [longitude]="homeLng" [iconUrl]="{'url': 'assets/currentLocation.png', 'scaledSize': {'height': 40, 'width': 40}}">
-        <agm-info-window>
-          <p>Your Current Location:</p>
-          <p>Longitude: {{lng}}</p>
-          <p>Latitude: {{lat}}</p>
-        </agm-info-window>
-      </agm-marker>
-  <agm-marker [latitude]="59.326242" [longitude]="17.8419719" [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+<agm-map [latitude]="lat" [longitude]="lng">
+  <agm-marker [latitude]="homeLat" [longitude]="homeLng"
+    [iconUrl]="{'url': 'assets/currentLocation.png', 'scaledSize': {'height': 40, 'width': 40}}">
     <agm-info-window>
-        <p>Username: {{lng}}</p>
-        <p>Note: {{lat}}</p>
+      <p>Your Current Location:</p>
+      <p>Longitude: {{lng}}</p>
+      <p>Latitude: {{lat}}</p>
+    </agm-info-window>
+  </agm-marker>
+  <agm-marker [latitude]="59.326242" [longitude]="17.8419719"
+    [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+    <agm-info-window>
+      <p>Username: {{lng}}</p>
+      <p>Note: {{lat}}</p>
     </agm-info-window>
   </agm-marker>
 </agm-map>
+
+<div class="remarkBody m-2">
+  <div id="searchBar" class="input-group">
+    <input type="text" class="form-control" placeholder="Search notes; by username, content..."
+      aria-label="Search by username, note content..." aria-describedby="button-addon2">
+    <div class="input-group-append">
+      <button [disabled]="addNoteMode" class="btn btn-outline-info" type="button" id="button-addon2">Search</button>
+    </div>
+  </div>
+
+  <button *ngIf="!addNoteMode" id="addNote" class="btn btn-dark btn-md" (click)="addNoteToggle()">Add Note</button>
+
+  <div id="guide" class="rounded bg-light">
+    <span>Guide</span>
+  </div>
+
+  <div *ngIf="!addNoteMode" id="searchResults" class="rounded bg-light">Search Results</div>
+  <div *ngIf="addNoteMode" id="searchResults" class="rounded bg-light">
+    <span class="d-block m-1">Add Note for current location:</span> 
+    <span class="d-block ml-2"><strong>Longitude:</strong> {{lng}}</span> 
+    <span class="d-block ml-2"><strong>Latitude:</strong> {{lat}}</span>
+      <form class="m-2" [formGroup]="noteForm" (ngSubmit)="createMarkerNote()">
+          <div class="form-group">
+            <label class="control-label"><b>Description</b>:</label>
+            <textarea type="text" class="form-control" formControlName="note" placeholder="note..."
+              [ngClass]="{'is-invalid': noteForm.get('note').errors && noteForm.get('note').touched}"></textarea>
+      
+            <div class="invalid-feedback" *ngIf="noteForm.get('note').hasError('required') && noteForm.get('note').touched">
+              Note description is required</div>
+          </div>
+      
+          <button class="btn btn-success" [disabled]="!noteForm.valid" type="submit" id="formSubmit">Save</button>
+          <button class="btn btn-light btn-md" (click)="addNoteToggle()">Cancel</button>
+        </form>
+  </div>
+
+
+
+</div>

@@ -6,9 +6,10 @@ using System.Text;
 
 namespace landmark_remark_API.Tests
 {
+    //Returns Mock automapper
     public static class IMapperMocker
     {
-        //Mock automapper
+        //Returns Mock automapper configured with the landmark_remark_API automapper profile
         public static IMapper getMapper()
         {
             var config = new MapperConfiguration(cfg =>

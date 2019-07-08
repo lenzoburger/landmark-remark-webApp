@@ -7,8 +7,10 @@ using System.Text;
 
 namespace landmark_remark_API.Tests
 {
+     //Mock LandmarkingContext db extension methods
     public static class DbContextExtensions
     {
+        // Seeds data into Mock LandmarkingContext db
         public static void Seed(this LandmarkingContext dbContext)
         {
             // retreive JSON user data
@@ -31,6 +33,7 @@ namespace landmark_remark_API.Tests
             dbContext.SaveChanges();
         }
 
+        // Hash seed data passwords
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
