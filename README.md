@@ -46,7 +46,7 @@ Angular/.NetCore application for placing location marker notes on google maps
 * Search Functionality frontend & API: 2h
 
 #### Known limitations
-1.User can add multiple notes at the same location but cannot edit them once saved
+1. User can add multiple notes at the same location but cannot edit them once saved
 2. All saved notes are retrieved from database and rendered on map. This would be not scalable for a real-world application and would affect application performance as user base grows. Some form of lazy loading & retrieving only notes in map view may reduce impact on performance.
 3. Owing to time contraints, did not achieve a high level of code coverage with testing.
 
@@ -85,8 +85,8 @@ The following dependencies will be required to run the application locally:
 
 Run from root directory `landmark-remark-webApp`:
 * **API** tests: `npm run dotnet-test` or with [_.NET Core Test Explorer_](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer) extension in vscode
-* **Frontend** _angular/karma_ tests**: `npm ng test`
-* Both **API** and **Angular** tests: `npm test`
+* **Frontend** _angular/karma_ tests: `npm ng test`
+* Run both **API** and **Angular** tests: `npm test`
 
 ### Tools
 1. [Postman](https://www.getpostman.com/downloads)
