@@ -11,13 +11,14 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   model: any = {};
   constructor(
-    public authservice: AuthService,
-    private alertify: AlertifyService,
+    public authservice: AuthService, // user authentication service
+    private alertify: AlertifyService, // inject AlertifyJs service
     private router: Router
   ) {}
 
   ngOnInit() {}
 
+  // sends signIn credentials to authentication service & redirects user to 'remark' upon seccessful login
   login() {
     this.authservice.login(this.model).subscribe(
       next => {
@@ -32,10 +33,12 @@ export class NavComponent implements OnInit {
     );
   }
 
+  // returns whether user is logged in
   loggedIn() {
     return this.authservice.loggedIn();
   }
 
+  // logouts user: removes and resets cached JWT token & redirects user to home
   logout() {
     if (this.loggedIn()) {
       localStorage.removeItem('token');

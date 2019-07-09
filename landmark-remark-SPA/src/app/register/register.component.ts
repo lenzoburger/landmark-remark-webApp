@@ -19,9 +19,10 @@ export class RegisterComponent implements OnInit {
               private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
-    this.createRegistrationForm();
+    this.createRegistrationForm(); // create registerForm on component init
   }
 
+  // Build and Validate RegistrationForm
   createRegistrationForm() {
     this.registerForm = this.fb.group(
       {
@@ -34,10 +35,12 @@ export class RegisterComponent implements OnInit {
       { validators: this.passwordMatchValidator });
   }
 
+  // Verify user has supplied matching password in confirm password field
   passwordMatchValidator(form: FormGroup) {
     return form.get('password').value === form.get('confirmPassword').value ? null : { mismatch: true };
   }
 
+// OnSubmit : Send user details to authservice & handle errors & redirect to 'remark' route upon succesfull registration
   register() {
     if (this.registerForm.valid) {
       this.user = Object.assign({}, this.registerForm.value);
@@ -53,6 +56,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // emit cancel event back to 'home' componet & return user to landing page
   cancel() {
     this.cancelRegister.emit(false);
   }

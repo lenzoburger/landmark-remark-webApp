@@ -8,6 +8,7 @@ using System.Text;
 
 namespace landmark_remark_API.Tests
 {
+    //Mock IConfiguration json data
     public static class IConfigMocker
     {
         //Mock IConfiguration

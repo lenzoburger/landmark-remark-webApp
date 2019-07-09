@@ -1,3 +1,120 @@
-<p>
-  remark works!
-</p>
+<agm-map [latitude]="lat" [longitude]="lng">
+  <agm-marker [latitude]="homeLat" [longitude]="homeLng"
+    [iconUrl]="{'url': 'assets/currentLocation.png', 'scaledSize': {'height': 40, 'width': 40}}">
+    <agm-info-window>
+      <p>Your Current Location:</p>
+      <p>Longitude: {{lng}}</p>
+      <p>Latitude: {{lat}}</p>
+    </agm-info-window>
+  </agm-marker>
+  <agm-marker [latitude]="59.326242" [longitude]="17.8419719"
+    [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+    <agm-info-window>
+      <p>Username: {{lng}}</p>
+      <p>Note: {{lat}}</p>
+    </agm-info-window>
+  </agm-marker>
+
+  <ng-container *ngFor="let marker of savedMarkers">
+
+    <agm-marker *ngIf="marker.userId == currentUserId" [latitude]="marker.latitude" [longitude]="marker.longitude"
+      [iconUrl]="{'url': 'assets/myMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+      <agm-info-window>
+        <p>My Note</p>
+        <Span class="d-block">Note:</Span>
+        <p>{{marker.note}}</p>
+        <span>Created On: {{marker.createdDate | date}}</span>
+      </agm-info-window>
+    </agm-marker>
+
+    <agm-marker *ngIf="marker.userId != currentUserId" [latitude]="marker.latitude" [longitude]="marker.longitude"
+      [iconUrl]="{'url': 'assets/peopleMarkers.png', 'scaledSize': {'height': 40, 'width': 40}}">
+      <agm-info-window>
+        <span>Username:</span>
+        <p>{{marker.username}}</p>
+        <Span class="d-block">Note:</Span>
+        <p>{{marker.note}}</p>
+        <span>Created On: {{marker.createdDate | date}}</span>
+      </agm-info-window>
+    </agm-marker>
+  </ng-container>
+
+
+</agm-map>
+
+<div class="remarkBody">
+
+  <form id="searchBar" class="input-group" [formGroup]="searchBarForm"
+    (ngSubmit)="searchMarkerNotes(searchBarForm.get('search').value)">
+    <input type="text" class="form-control" formControlName="search" placeholder="Search by username & note content"
+      aria-label="Search by username & note content" aria-describedby="button-addon2"
+      [ngClass]="{'is-invalid': searchBarForm.get('search').errors && searchBarForm.get('search').touched}">
+    <div class="input-group-append">
+      <button [disabled]="!searchBarForm.valid || addNoteMode" class="btn btn-outline-info" type="submit"
+        id="button-addon2">Search</button>
+    </div>
+    <button *ngIf="!addNoteMode" id="addNote" class="btn btn-dark btn-md" (click)="addNoteToggle()">Add Note</button>
+  </form>
+
+
+  <div id="guide" class="rounded bg-light row">
+    <div class="col-4"><img src="assets/currentLocation.png" alt="Current position" height="35" width="35">
+      Current Location</div>
+    <div class="col-4"><img src="assets/myMarkers.png" alt="my markers" height="35" width="35">
+      My Markers</div>
+    <div class="col-4"><img src="assets/peopleMarkers.png" alt="Other's markers" height="35" width="35">
+      People's Markers</div>
+  </div>
+
+  <div *ngIf="!addNoteMode" id="searchResults" class="rounded bg-light">
+    <ng-container *ngIf="searchResults !== undefined">
+      <p *ngIf="!searchBarForm.untouched && searchResults.length == 0" class="m-3">No matching results found</p>
+      <ng-container *ngFor="let markerNote of searchResults">
+
+        <div *ngIf="markerNote.userId != currentUserId" class="card border-dark"
+          (click)="gotToMarkerLocation(markerNote.latitude, markerNote.longitude)">
+          <div class="card-header">{{markerNote.createdDate | date}}</div>
+          <div class="card-body text-dark">
+            <h5 class="card-title">{{markerNote.username}}</h5>
+            <span>Note:</span>
+            <p class="card-text">{{markerNote.note}}</p>
+          </div>
+        </div>
+
+        <div *ngIf="markerNote.userId == currentUserId" class="card border-primary"
+          (click)="gotToMarkerLocation(markerNote.latitude, markerNote.longitude)">
+          <div class="card-header">{{markerNote.createdDate | date}}</div>
+          <div class="card-body text-primary">
+            <h5 class="card-title">My Note</h5>
+            <span>Note:</span>
+            <p class="card-text">{{markerNote.note}}</p>
+          </div>
+        </div>
+
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div *ngIf="addNoteMode" id="addNotesFrom" class="rounded bg-light">
+    <span class="d-block m-1">Add Note for current location:</span>
+    <span class="d-block ml-2"><strong>Longitude:</strong> {{lng}}</span>
+    <span class="d-block ml-2"><strong>Latitude:</strong> {{lat}}</span>
+    <form class="m-2" [formGroup]="noteForm" (ngSubmit)="createMarkerNote()">
+      <div class="form-group">
+        <label class="control-label"><b>Description</b>:</label>
+        <textarea type="text" class="form-control" formControlName="note" placeholder="note..."
+          [ngClass]="{'is-invalid': noteForm.get('note').errors && noteForm.get('note').touched}"></textarea>
+
+        <div class="invalid-feedback" *ngIf="noteForm.get('note').hasError('required') && noteForm.get('note').touched">
+          Note description is required</div>
+        <div class="invalid-feedback"
+          *ngIf="noteForm.get('note').hasError('maxlength') && noteForm.get('note').touched">
+          Note but must not be greater than 150 characters</div>
+      </div>
+
+      <button class="btn btn-success" [disabled]="!noteForm.valid" type="submit" id="formSubmit">Save</button>
+      <button class="btn btn-light btn-md" (click)="addNoteToggle()">Cancel</button>
+    </form>
+  </div>
+
+</div>

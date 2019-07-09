@@ -8,6 +8,7 @@ import {
 } from '@angular/common/http/testing';
 import { User } from '../_models/user';
 
+// Test Authentication service methods with mock http client
 describe('Service: Auth', () => {
   const mockToken =
     // tslint:disable-next-line: max-line-length
@@ -36,6 +37,7 @@ describe('Service: Auth', () => {
     }
   ));
 
+  // Test user login and verify returned Token & user object
   describe('User Login', () => {
     it('returns JWT token and Current User', () => {
       const mockLoginCreds = { username: 'lencho', password: 'password123' };
@@ -50,8 +52,7 @@ describe('Service: Auth', () => {
         }
       };
 
-      mockService.login(mockLoginCreds).subscribe(next => {
-        expect(mockService.loggedIn()).toBeTruthy();
+      mockService.login(mockLoginCreds).subscribe(next => {        
         expect(mockService.currentUser.username).toEqual(
           mockLoginCreds.username
         );
@@ -67,6 +68,7 @@ describe('Service: Auth', () => {
     });
   });
 
+  // Test user registration and verify returned newly created user
   describe('User Registration', () => {
     it('returns newly created user', () => {
       const mockRegistrationDetails: any = {

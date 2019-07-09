@@ -6,6 +6,7 @@ using System.Text;
 
 namespace landmark_remark_API.Tests
 {
+    //Returns a Mock LandmarkingContext db context
     public static class DbContextMocker
     {
         public static LandmarkingContext GetLandmarkingContext(string dbName, bool seedData = true)

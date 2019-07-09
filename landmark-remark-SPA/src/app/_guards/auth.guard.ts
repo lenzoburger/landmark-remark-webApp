@@ -6,6 +6,7 @@ import { AlertifyService } from '../_services/alertify.service';
 @Injectable({
   providedIn: 'root'
 })
+// prevents unauthorized access to whitelisted pages
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router, private altertify: AlertifyService) { }
 

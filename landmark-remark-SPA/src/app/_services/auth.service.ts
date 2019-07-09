@@ -8,6 +8,7 @@ import { User } from '../_models/user';
 @Injectable({
   providedIn: 'root'
 })
+// Injectble service for user authetication and registration
 export class AuthService {
   baseUrl = environment.apiUrl + 'auth/';
   jwtHelper = new JwtHelperService();
@@ -16,6 +17,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // Sends POST request with user credentials & saves retured JWT Token and User object in localStorage
   login(userCred: any) {
     return this.http.post(this.baseUrl + 'login', userCred).pipe(
       map((response: any) => {
@@ -30,10 +32,12 @@ export class AuthService {
     );
   }
 
+// Sends POST request new user form details
   register(user: any) {
     return this.http.post(this.baseUrl + 'register', user);
   }
 
+// Checks if JWT token is expired or deleted from localStorage
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);

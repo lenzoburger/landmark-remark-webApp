@@ -15,6 +15,7 @@ namespace landmark_remark_API.Tests
 {
     public class AuthControllerTest
     {
+        // Mock AuthController 'register' method verify CreatedAtRouteResult object
         [Fact]
         public async Task Post_Register_ReturnsNewlyCreatedUser()
         {
@@ -47,6 +48,7 @@ namespace landmark_remark_API.Tests
             dbContext.Dispose();
         }
 
+         // Mock AuthController 'login' method verify JWT token and return user object
         [Fact]
         public async Task Post_Login_returnsJWTTokenAndUserObject()
         {

@@ -1,0 +1,52 @@
+.remarkBody {
+  margin: 5px auto;
+  max-width: 1200px;
+  display: grid;
+  grid-template-areas:
+    ' searchBar'
+    ' guide'
+    ' results';
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-gap: 10px;
+  place-items: center;
+}
+
+agm-map {
+  height: 450px;
+}
+
+#searchBar {
+  grid-area: searchBar;
+}
+
+#addNote {
+  margin-right: 5px;
+  margin-left: 10px;
+  justify-self: end;
+}
+
+#guide {
+  width: 100%;
+  grid-area: guide;
+}
+
+#searchResults {
+  width: 100%;
+  grid-area: results;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  grid-auto-rows: minmax(auto, 200px);
+  place-items: center;
+  grid-gap: 8px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.card :hover {
+  background-color: aliceblue;
+}
