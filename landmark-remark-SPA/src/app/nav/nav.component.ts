@@ -25,10 +25,12 @@ export class NavComponent implements OnInit {
         this.alertify.success('Logged in successfully');
       },
       error => {
+        this.model.password = '';
         this.alertify.error(error);
       },
       () => {
         this.router.navigate(['/remark']);
+        this.model = {};
       }
     );
   }

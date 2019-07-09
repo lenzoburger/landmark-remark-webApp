@@ -7,7 +7,7 @@ import { HomeComponent } from './home.component';
 import { RegisterComponent } from '../register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -18,11 +18,10 @@ describe('HomeComponent', () => {
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
-        RouterModule
+        RouterModule.forRoot([{ path: '', component: HomeComponent }])
       ],
-      declarations: [ HomeComponent, RegisterComponent ]
-    })
-    .compileComponents();
+      declarations: [HomeComponent, RegisterComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

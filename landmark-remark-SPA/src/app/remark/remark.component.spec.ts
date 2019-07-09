@@ -7,6 +7,7 @@ import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RemarkComponent } from './remark.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from '../_services/auth.service';
 
 describe('RemarkComponent', () => {
   let component: RemarkComponent;
@@ -21,6 +22,7 @@ describe('RemarkComponent', () => {
         HttpClientTestingModule
       ],
       declarations: [ RemarkComponent ],
+      providers : [AuthService],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
     ],
@@ -34,7 +36,7 @@ describe('RemarkComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create Remark Component and render map' ,  () => {
     expect(component).toBeTruthy();
   });
 });

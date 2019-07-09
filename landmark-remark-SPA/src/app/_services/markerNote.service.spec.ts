@@ -15,7 +15,7 @@ describe('Service: MarkerNote', () => {
     });
   });
 
-  it('should ...', inject([MarkerNoteService], (service: MarkerNoteService) => {
+  it('should inject markerNote service', inject([MarkerNoteService], (service: MarkerNoteService) => {
     expect(service).toBeTruthy();
   }));
 });
