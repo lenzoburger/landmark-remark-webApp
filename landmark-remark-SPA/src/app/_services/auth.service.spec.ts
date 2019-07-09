@@ -52,7 +52,7 @@ describe('Service: Auth', () => {
         }
       };
 
-      mockService.login(mockLoginCreds).subscribe(next => {        
+      mockService.login(mockLoginCreds).subscribe(next => {
         expect(mockService.currentUser.username).toEqual(
           mockLoginCreds.username
         );

@@ -40,7 +40,10 @@ export class RemarkComponent implements OnInit {
       this.savedMarkers = data.savedMarkers;
     });
 
-    this.currentUserId = this.authService.currentUser.id;
+    if (this.authService.currentUser !== undefined) {
+      this.currentUserId = this.authService.currentUser.id;
+    }
+
     this.getCurrentLocation(); // Get current location set to current view on map
     this.createNoteForm(); // Create reactive createNoteForm
     this.creatSearchBarForm(); // Create reactive searchBarForm

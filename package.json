@@ -1,0 +1,30 @@
+{
+  "name": "landmark-remark-webapp",
+  "version": "1.0.0",
+  "description": "Save notes on google maps",
+  "main": "index.js",
+  "scripts": {
+    "ng": "cd landmark-remark-SPA && ng",
+    "dotnet": "cd API/landmark-remark-API && dotnet",
+    "dotnet-test": "cd API && dotnet test",
+    "dev": "cd landmark-remark-SPA && npm run start-app-dev",
+    "install-spa": "cd landmark-remark-SPA && npm install",
+    "update": "cd landmark-remark-SPA && npm update",
+    "setup": "npm run dotnet restore && npm run dotnet build && npm run install-spa",
+    "start": "cd landmark-remark-SPA && npm run start-app",
+    "test": "cd landmark-remark-SPA && npm run test-app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lenzoburger/landmark-remark-webApp.git"
+  },
+  "keywords": [
+    "landmark"
+  ],
+  "author": "lencho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lenzoburger/landmark-remark-webApp/issues"
+  },
+  "homepage": "https://github.com/lenzoburger/landmark-remark-webApp#readme"
+}
